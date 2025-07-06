@@ -1,1 +1,1 @@
-web:gunicorn munia.wsgi 
+web:gunicorn munia.wsgi:application
