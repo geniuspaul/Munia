@@ -19,7 +19,7 @@ PyJWT==2.9.0
 python-http-client==3.3.7
 PyYAML==6.0.2
 requests==2.32.4
-sendgrid==3.6.5
+sendgrid==5.0.0
 sendgrid-django==4.2.0
 six==1.17.0
 sqlparse==0.5.3
