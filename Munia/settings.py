@@ -10,6 +10,10 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import certifi
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Munia.settings')
+application = get_wsgi_application()
 
 os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
 os.environ['SSL_CERT_FILE'] = certifi.where()
@@ -23,8 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --------------------------------------
 # Core Settings
 # --------------------------------------
-SECRET_KEY = os.environ("SECRET_KEY")
-DEBUG = os.environ('DEBUG')
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback")
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
 ALLOWED_HOSTS = ['.onrender.com', '127.0.0.1']
 
 # --------------------------------------
