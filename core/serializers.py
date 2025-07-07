@@ -69,6 +69,7 @@ class CurrentUserSerializer(serializers.ModelSerializer):
             'last_login',
         ]
 
+    
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
     otp = serializers.CharField()

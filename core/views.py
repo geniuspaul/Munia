@@ -244,7 +244,29 @@ class CurrentUserView(APIView):
                 {"error": "Failed to fetch user details", "details": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-            
+
+
+class RequestOTPView(APIView):
+    def post(self, request):
+        serializer = SignUpSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "User with this email does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Create OTP
+        otp_code = generate_otp()
+        OTP.objects.create(email=email, code=otp_code)
+
+        # Send OTP
+        send_otp_email(email, otp_code)
+
+        return Response({"message": "OTP sent successfully"}, status=status.HTTP_200_OK)
+
+
 class ResetPasswordView(APIView):
     def post(self, request):
         serializer = ResetPasswordSerializer(data=request.data)

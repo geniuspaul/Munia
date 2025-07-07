@@ -1,20 +1,27 @@
 services:
   - type: web
-    name: munia-web  # You can change to 'django-backend' if preferred
+<<<<<<< HEAD
+    name: munia-web
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn Munia.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: Munia.settings
+      - key: PYTHON_VERSION
+        value: 3.11
+=======
+    name: django-backend
     env: python
     plan: free
-    runtime: python
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
       python manage.py migrate --noinput
     startCommand: gunicorn Munia.wsgi:application
     envVars:
-      - key: DJANGO_SETTINGS_MODULE
-        value: Munia.settings
-      - key: PYTHON_VERSION
-        value: 3.11
       - key: DEBUG
         value: False
       - key: SECRET_KEY
         generateValue: true
+>>>>>>> b95e53d (updating)
