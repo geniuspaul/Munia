@@ -5,11 +5,11 @@ from django.utils.timezone import now
 from django.core.mail import send_mail
 from django.conf import settings
 
-def generate_referral_code(length=8):
+def generate_referral_code(length=6):
     from core.models import UserProfile
     chars = string.ascii_uppercase + string.digits
     while True:
-        code = ''.join(random.choices(chars, k=length))
+        code = 'MUN-'+''.join(random.choices(chars, k=length))
         if not UserProfile.objects.filter(referral_code=code).exists():
             return code
 
