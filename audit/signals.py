@@ -70,7 +70,7 @@ def detect_referral_farming(sender, instance, created, **kwargs):
 
 # 📱 3. Log device info on login
 @receiver(user_logged_in)
-def log_user_device(sender, request, user, **kwargs):
+def handle_user_login(sender, request, user, **kwargs):
     user_agent_str = request.META.get('HTTP_USER_AGENT', '')
     user_agent = parse_user_agent(user_agent_str)
     device_id = generate_device_id(request)
@@ -78,30 +78,14 @@ def log_user_device(sender, request, user, **kwargs):
     os = user_agent.os.family
     browser = user_agent.browser.family
 
-    if not UserDevice.objects.filter(user=user, device_id=device_id).exists():
-        UserDevice.objects.create(
-            user=user,
-            device_id=device_id,
-            os=os,
-            browser=browser,
-            is_trusted=False
-        )
-
-@receiver(user_logged_in)
-def detect_shared_device_abuse(sender, request, user, **kwargs):
-    user_agent_str = request.META.get('HTTP_USER_AGENT', '')
-    user_agent = parse_user_agent(user_agent_str)
-    device_id = generate_device_id(request)
-
-    os = user_agent.os.family
-    browser = user_agent.browser.family
-
-    device_obj, created = UserDevice.objects.get_or_create(
+    # Log device if not already recorded
+    device, created = UserDevice.objects.get_or_create(
         user=user,
         device_id=device_id,
         defaults={"os": os, "browser": browser, "is_trusted": False}
     )
 
+    # Detect shared device abuse
     user_count = UserDevice.objects.filter(device_id=device_id).values("user").distinct().count()
 
     if user_count > 3:
