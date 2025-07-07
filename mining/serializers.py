@@ -24,7 +24,7 @@ class DailySignInSerializer(serializers.ModelSerializer):
 class QuizQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizQuestion
-        fields = ['id', 'question', 'A', 'B', 'C', 'D', 'reward']
+        fields = ['id', 'question', 'A', 'B', 'C', 'D', 'reward', 'correct_option']
 
 
 class QuizAnswerSerializer(serializers.Serializer):
