@@ -168,11 +168,11 @@ class SocialTaskAPIView(APIView):
 
     def get(self, request):
         try:
-            task = SocialTask.objects.get(active=True)
+            task = SocialTask.objects.all()
         except SocialTask.DoesNotExist:
             return Response({"error": "No active social task found."}, status=404)
 
-        serializer = SocialTaskSerializer(task)
+        serializer = SocialTaskSerializer(task, many=True)
         return Response(serializer.data)
 
 
