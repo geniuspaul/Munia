@@ -6,7 +6,7 @@ from .serializers import TopEarnerSerializer, TopReferralSerializer
 
 
 class TopEarnerAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         top_10 = TopEarner.objects.all().order_by('rank')[:10]
@@ -22,7 +22,7 @@ class TopEarnerAPIView(APIView):
 
 
 class TopReferralAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         top_10 = TopReferral.objects.all().order_by('rank')[:10]
