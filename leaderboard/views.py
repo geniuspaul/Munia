@@ -11,10 +11,11 @@ class TopEarnerAPIView(APIView):
     def get(self, request):
         top_10 = TopEarner.objects.all().order_by('rank')[:10]
         top_10_serialized = TopEarnerSerializer(top_10, many=True).data
-
-        user_entry = TopEarner.objects.filter(user=request.user).first()
-        authenticated_user = TopEarnerSerializer(user_entry).data if user_entry else None
-
+        if request.user.is_authenticated:
+            user_entry = TopEarner.objects.filter(user=request.user).first()
+            authenticated_user = TopEarnerSerializer(user_entry).data if user_entry else None
+        else:
+            authenticated_user = None
         return Response({
             "top_10": top_10_serialized,
             "authenticated_user": authenticated_user
@@ -28,8 +29,11 @@ class TopReferralAPIView(APIView):
         top_10 = TopReferral.objects.all().order_by('rank')[:10]
         top_10_serialized = TopReferralSerializer(top_10, many=True).data
 
-        user_entry = TopReferral.objects.filter(user=request.user).first()
-        authenticated_user = TopReferralSerializer(user_entry).data if user_entry else None
+        if request.user.is_authenticated:
+            user_entry = TopEarner.objects.filter(user=request.user).first()
+            authenticated_user = TopEarnerSerializer(user_entry).data if user_entry else None
+        else:
+            authenticated_user = None
 
         return Response({
             "top_10": top_10_serialized,
